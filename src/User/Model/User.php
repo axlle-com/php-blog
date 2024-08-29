@@ -1,13 +1,13 @@
 <?php
+
 namespace Main\User\Model;
 
-use App\Models\History;
-use App\Models\TelegramUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Main\History\Model\History;
 
 /**
  * Class User
@@ -30,59 +30,57 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @property Collection|History[] $histories
- * @property Collection|TelegramUser[] $telegramUsers
  * @property Collection|UserToken[] $userTokens
- *
- * @package App\Models
  */
 class User extends Model
 {
-	use SoftDeletes;
-	protected $table = 'user';
+    use SoftDeletes;
 
-	protected $casts = [
-		'is_email' => 'bool',
-		'is_phone' => 'bool',
-		'status' => 'int'
-	];
+    protected $table = 'user';
 
-	protected $hidden = [
-		'remember_token',
-		'auth_token',
-		'password_reset_token'
-	];
+    protected $casts = [
+        'is_email' => 'bool',
+        'is_phone' => 'bool',
+        'status' => 'int',
+    ];
 
-	protected $fillable = [
-		'first_name',
-		'last_name',
-		'patronymic',
-		'phone',
-		'email',
-		'is_email',
-		'is_phone',
-		'status',
-		'avatar',
-		'password_hash',
-		'remember_token',
-		'auth_token',
-		'auth_key',
-		'password_reset_token'
-	];
+    protected $hidden = [
+        'remember_token',
+        'auth_token',
+        'password_reset_token',
+    ];
 
-	public function histories(): HasMany
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'patronymic',
+        'phone',
+        'email',
+        'is_email',
+        'is_phone',
+        'status',
+        'avatar',
+        'password_hash',
+        'remember_token',
+        'auth_token',
+        'auth_key',
+        'password_reset_token',
+    ];
+
+    /**
+     * @return HasMany<History>
+     */
+    public function histories(): HasMany
     {
-		return $this->hasMany(History::class);
-	}
+        return $this->hasMany(History::class);
+    }
 
-	public function telegramUsers(): HasMany
+    /**
+     * @return HasMany<UserToken>
+     */
+    public function userTokens(): HasMany
     {
-		return $this->hasMany(TelegramUser::class);
-	}
-
-	public function userTokens(): HasMany
-    {
-		return $this->hasMany(UserToken::class);
-	}
+        return $this->hasMany(UserToken::class);
+    }
 }

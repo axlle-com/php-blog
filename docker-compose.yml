@@ -5,7 +5,6 @@ services:
         image: nginx:alpine
         environment:
             TZ: Europe/Moscow
-        container_name: nginx
         hostname: host.docker.internal
         ports:
             - "8090:80"
@@ -20,7 +19,6 @@ services:
         build:
             context: ./docker/php-fpm
             dockerfile: Dockerfile
-        container_name: php-fpm
         environment:
             TZ: "Europe/Moscow"
             PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=docker}
@@ -40,11 +38,10 @@ services:
 
     mysql:
         image: mysql:8.0-oracle
-        container_name: mysql
         environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-}
-            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
-            MYSQL_USER: ${DB_USERNAME:-root}
+            MYSQL_DATABASE: ${DB_DATABASE:-base}
             MYSQL_PASSWORD: ${DB_PASSWORD:-}
         ports:
             - "3308:3306"
@@ -57,9 +54,8 @@ services:
 
     postgres:
         image: postgres:16.4-alpine
-        container_name: postgres
         environment:
-            POSTGRES_DB: ${DB_DATABASE:-laravel}
+            POSTGRES_DB: ${DB_DATABASE:-base}
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
             TZ: Europe/Moscow
@@ -75,7 +71,6 @@ services:
 
     redis:
         image: redis:7.4.0-alpine
-        container_name: redis
         environment:
             TZ: Europe/Moscow
         ports:

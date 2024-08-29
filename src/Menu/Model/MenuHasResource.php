@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Menu\Model;
 
 use Illuminate\Database\Eloquent\Model;
@@ -10,24 +11,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $menu_id
  * @property string $resource
  * @property int $resource_id
- *
  * @property Menu $menu
- *
- * @package App\Models
  */
 class MenuHasResource extends Model
 {
-	protected $table = 'menu_has_resource';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'menu_has_resource';
 
-	protected $casts = [
-		'menu_id' => 'int',
-		'resource_id' => 'int'
-	];
+    public $incrementing = false;
 
-	public function menu(): BelongsTo
+    public $timestamps = false;
+
+    protected $casts = [
+        'menu_id' => 'int',
+        'resource_id' => 'int',
+    ];
+
+    /**
+     * @return BelongsTo<Menu, MenuHasResource>
+     */
+    public function menu(): BelongsTo
     {
-		return $this->belongsTo(Menu::class);
-	}
+        return $this->belongsTo(Menu::class);
+    }
 }

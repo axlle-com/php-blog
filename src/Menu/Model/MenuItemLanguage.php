@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Menu\Model;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,29 +12,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $title
  * @property string $language
  * @property int $menu_item_id
- *
  * @property MenuItem $menuItem
- *
- * @package App\Models
  */
 class MenuItemLanguage extends Model
 {
-	protected $table = 'menu_item_language';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'menu_item_language';
 
-	protected $casts = [
-		'id' => 'int',
-		'menu_item_id' => 'int'
-	];
+    public $incrementing = false;
 
-	protected $fillable = [
-		'title',
-		'language'
-	];
+    public $timestamps = false;
 
-	public function menuItem(): BelongsTo
+    protected $casts = [
+        'id' => 'int',
+        'menu_item_id' => 'int',
+    ];
+
+    protected $fillable = [
+        'title',
+        'language',
+    ];
+
+    /**
+     * @return BelongsTo<MenuItem, MenuItemLanguage>
+     */
+    public function menuItem(): BelongsTo
     {
-		return $this->belongsTo(MenuItem::class);
-	}
+        return $this->belongsTo(MenuItem::class);
+    }
 }

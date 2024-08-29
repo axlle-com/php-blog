@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Template\Model;
 
 use Carbon\Carbon;
@@ -19,30 +20,34 @@ use Main\Post\Model\PostCategory;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @property Collection|Post[] $posts
  * @property Collection|PostCategory[] $postCategories
- *
- * @package App\Models
  */
 class Template extends Model
 {
-	use SoftDeletes;
-	protected $table = 'template';
+    use SoftDeletes;
 
-	protected $fillable = [
-		'title',
-		'name',
-		'resource'
-	];
+    protected $table = 'template';
 
-	public function posts(): HasMany
+    protected $fillable = [
+        'title',
+        'name',
+        'resource',
+    ];
+
+    /**
+     * @return HasMany<Post>
+     */
+    public function posts(): HasMany
     {
-		return $this->hasMany(Post::class);
-	}
+        return $this->hasMany(Post::class);
+    }
 
-	public function postCategories(): HasMany
+    /**
+     * @return HasMany<PostCategory>
+     */
+    public function postCategories(): HasMany
     {
-		return $this->hasMany(PostCategory::class);
-	}
+        return $this->hasMany(PostCategory::class);
+    }
 }

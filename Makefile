@@ -2,12 +2,13 @@ up:
 	docker-compose up -d
 	docker-compose exec php-fpm composer install
 	docker-compose exec php-fpm php artisan migrate --step
+check:
+	docker-compose exec php-fpm vendor/bin/rector process
+	docker-compose exec php-fpm vendor/bin/phpstan analyse --memory-limit=2G --debug
 migrate:
 	docker-compose exec php-fpm php artisan migrate --step
 composer:
 	docker-compose exec php-fpm composer update
-psalm:
-	docker-compose exec php-fpm ./vendor/bin/psalm
 rollback:
 	docker-compose exec php-fpm php artisan migrate:rollback
 logs:
@@ -16,7 +17,7 @@ stop:
 	docker-compose stop
 refresh:
 	docker-compose down
-	docker-compose build
+	docker-compose build --no-cache
 	make up
 clear:
 	docker-compose exec php-fpm composer dumpautoload

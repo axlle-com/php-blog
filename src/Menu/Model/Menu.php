@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Menu\Model;
 
 use Carbon\Carbon;
@@ -17,30 +18,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @property Collection|MenuHasResource[] $menuHasResources
  * @property Collection|MenuItem[] $menuItems
- *
- * @package App\Models
  */
 class Menu extends Model
 {
-	use SoftDeletes;
-	protected $table = 'menu';
+    use SoftDeletes;
 
-	protected $fillable = [
-		'title',
-		'name',
-		'description'
-	];
+    protected $table = 'menu';
 
-	public function menuHasResources(): HasMany
+    protected $fillable = [
+        'title',
+        'name',
+        'description',
+    ];
+
+    /**
+     * @return HasMany<MenuHasResource>
+     */
+    public function menuHasResources(): HasMany
     {
-		return $this->hasMany(MenuHasResource::class);
-	}
+        return $this->hasMany(MenuHasResource::class);
+    }
 
-	public function menuItems(): HasMany
+    /**
+     * @return HasMany<MenuItem>
+     */
+    public function menuItems(): HasMany
     {
-		return $this->hasMany(MenuItem::class);
-	}
+        return $this->hasMany(MenuItem::class);
+    }
 }

@@ -1,10 +1,9 @@
 <?php
+
 namespace Main\Post\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-/**
+use Illuminate\Database\Eloquent\Relations\BelongsTo;/**
  * Class PostCategoryLanguage
  *
  * @property int $id
@@ -16,34 +15,37 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $title_short
  * @property string|null $description
  * @property string|null $preview_description
- *
  * @property PostCategory $postCategory
- *
- * @package App\Models
  */
+
 class PostCategoryLanguage extends Model
 {
-	protected $table = 'post_category_language';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'post_category_language';
 
-	protected $casts = [
-		'id' => 'int',
-		'post_category_id' => 'int'
-	];
+    public $incrementing = false;
 
-	protected $fillable = [
-		'meta_title',
-		'meta_description',
-		'language',
-		'title',
-		'title_short',
-		'description',
-		'preview_description'
-	];
+    public $timestamps = false;
 
-	public function postCategory(): BelongsTo
+    protected $casts = [
+        'id' => 'int',
+        'post_category_id' => 'int',
+    ];
+
+    protected $fillable = [
+        'meta_title',
+        'meta_description',
+        'language',
+        'title',
+        'title_short',
+        'description',
+        'preview_description',
+    ];
+
+    /**
+     * @return BelongsTo<PostCategory, PostCategoryLanguage>
+     */
+    public function postCategory(): BelongsTo
     {
-		return $this->belongsTo(PostCategory::class);
-	}
+        return $this->belongsTo(PostCategory::class);
+    }
 }

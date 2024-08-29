@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Menu\Model;
 
 use Carbon\Carbon;
@@ -22,53 +23,63 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @property Menu $menu
  * @property MenuItem|null $menuItem
  * @property Collection|MenuItem[] $menuItems
  * @property Collection|MenuItemLanguage[] $menuItemLanguages
- *
- * @package App\Models
  */
 class MenuItem extends Model
 {
-	use SoftDeletes;
-	protected $table = 'menu_item';
+    use SoftDeletes;
 
-	protected $casts = [
-		'menu_id' => 'int',
-		'menu_item_id' => 'int',
-		'resource_id' => 'int',
-		'sort' => 'int'
-	];
+    protected $table = 'menu_item';
 
-	protected $fillable = [
-		'menu_id',
-		'menu_item_id',
-		'resource',
-		'resource_id',
-		'title',
-		'sort',
-		'url'
-	];
+    protected $casts = [
+        'menu_id' => 'int',
+        'menu_item_id' => 'int',
+        'resource_id' => 'int',
+        'sort' => 'int',
+    ];
 
-	public function menu(): BelongsTo
+    protected $fillable = [
+        'menu_id',
+        'menu_item_id',
+        'resource',
+        'resource_id',
+        'title',
+        'sort',
+        'url',
+    ];
+
+    /**
+     * @return BelongsTo<Menu, MenuItem>
+     */
+    public function menu(): BelongsTo
     {
-		return $this->belongsTo(Menu::class);
-	}
+        return $this->belongsTo(Menu::class);
+    }
 
-	public function menuItem(): BelongsTo
+    /**
+     * @return BelongsTo<MenuItem, MenuItem>
+     */
+    public function menuItem(): BelongsTo
     {
-		return $this->belongsTo(__CLASS__);
-	}
+        return $this->belongsTo(self::class);
+    }
 
-	public function menuItems(): HasMany
+    /**
+     * @return HasMany<MenuItem>
+     */
+    public function menuItems(): HasMany
     {
-		return $this->hasMany(__CLASS__);
-	}
+        return $this->hasMany(self::class);
+    }
 
-	public function menuItemLanguages(): HasMany
+    /**
+     * @return HasMany<MenuItemLanguage>
+     */
+    public function menuItemLanguages(): HasMany
     {
-		return $this->hasMany(MenuItemLanguage::class);
-	}
+        return $this->hasMany(MenuItemLanguage::class);
+    }
 }

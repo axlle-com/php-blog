@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\User\Model;
 
 use Carbon\Carbon;
@@ -14,16 +15,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
- * @package App\Models
  */
 class UserGuest extends Model
 {
-	use SoftDeletes;
-	protected $table = 'user_guest';
+    use SoftDeletes;
 
-	protected $fillable = [
-		'email',
-		'name'
-	];
+    protected $table = 'user_guest';
+
+    protected $fillable = [
+        'email',
+        'name',
+    ];
 }

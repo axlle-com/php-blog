@@ -1,0 +1,46 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    # Уровень анализа (от 0 до max)
+    level: 9
+
+    # Пути к директориям, которые будут анализироваться.
+    paths:
+        - app
+        - src
+        - database
+        - routes
+        - tests
+
+    # Пути, которые следует исключить из анализа.
+    excludePaths:
+        - bootstrap/cache/*
+        - storage/*
+        - tests/CreatesApplication.php
+        - tests/TestCase.php
+        - routes/console.php
+
+    # Игнорирование ошибок, связанных с динамическими методами и свойствами.
+    ignoreErrors:
+#        # Ошибки, связанные с динамическими методами в моделях Eloquent
+#        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::.*#'
+#        # Ошибки, связанные с отсутствующими свойствами в моделях
+#        - '#Access to an undefined property App\\Models\\.*#'
+#        # Ошибки, связанные с отсутствующими свойствами в пространстве имен Main
+#        - '#Access to an undefined property Main\\.*#'
+#        # Ошибки из-за некорректного числа параметров
+#        - '#Method .*::.*\(\) invoked with [0-9]+ parameters, [0-9]+ required.#'
+#        # Ошибки, связанные с отсутствующими методами в пакете Spatie
+#        - '#Call to an undefined method Spatie\\Permission\\.*#'
+
+    # Проверка динамических свойств
+    checkDynamicProperties: true
+
+    # Файлы, которые должны быть загружены перед началом анализа
+    bootstrapFiles:
+        - vendor/autoload.php
+        - bootstrap/app.php
+
+    # Настройка производительности
+    # PHPStan не поддерживает maxErrors и memoryLimit напрямую

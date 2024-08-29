@@ -14,8 +14,9 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libmcrypt-dev \
     libcurl4-openssl-dev \
+    supervisor \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip xml mysqli pdo pdo_mysql \
+    && docker-php-ext-install gd zip xml mysqli pdo pdo_mysql pcntl intl \
     && pecl install redis \
     && docker-php-ext-enable redis
 
@@ -29,6 +30,7 @@ RUN mkdir /var/log/xdebug
 RUN chown -R www:www /var/log/xdebug
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Устанавливаем зависимости проекта
 COPY . /var/www/html
@@ -40,4 +42,5 @@ WORKDIR /var/www/html
 VOLUME ["/var/www/html", "/var/run/php-fpm", "/var/log/php"]
 
 EXPOSE 9000
+
 CMD ["php-fpm"]

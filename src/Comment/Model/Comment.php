@@ -26,46 +26,50 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @property Comment|null $comment
  * @property Collection|Comment[] $comments
- *
- * @package App\Models
  */
 class Comment extends Model
 {
-	use SoftDeletes;
-	protected $table = 'comment';
+    use SoftDeletes;
 
-	protected $casts = [
-		'comment_id' => 'int',
-		'resource_id' => 'int',
-		'person_id' => 'int',
-		'status' => 'int',
-		'is_viewed' => 'bool',
-		'level' => 'int'
-	];
+    protected $table = 'comment';
 
-	protected $fillable = [
-		'comment_id',
-		'resource',
-		'resource_id',
-		'person',
-		'person_id',
-		'status',
-		'is_viewed',
-		'level',
-		'path',
-		'text'
-	];
+    protected $casts = [
+        'comment_id' => 'int',
+        'resource_id' => 'int',
+        'person_id' => 'int',
+        'status' => 'int',
+        'is_viewed' => 'bool',
+        'level' => 'int',
+    ];
 
-	public function comment(): BelongsTo
+    protected $fillable = [
+        'comment_id',
+        'resource',
+        'resource_id',
+        'person',
+        'person_id',
+        'status',
+        'is_viewed',
+        'level',
+        'path',
+        'text',
+    ];
+
+    /**
+     * @return BelongsTo<Comment, Comment>
+     */
+    public function comment(): BelongsTo
     {
-		return $this->belongsTo(__CLASS__);
-	}
+        return $this->belongsTo(self::class);
+    }
 
-	public function comments(): HasMany
+    /**
+     * @return HasMany<Comment>
+     */
+    public function comments(): HasMany
     {
-		return $this->hasMany(__CLASS__);
-	}
+        return $this->hasMany(self::class);
+    }
 }

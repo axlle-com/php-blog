@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Gallery\Model;
 
 use Illuminate\Database\Eloquent\Model;
@@ -10,24 +11,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $gallery_id
  * @property string $resource
  * @property int $resource_id
- *
  * @property Gallery $gallery
- *
- * @package App\Models
  */
 class GalleryHasResource extends Model
 {
-	protected $table = 'gallery_has_resource';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'gallery_has_resource';
 
-	protected $casts = [
-		'gallery_id' => 'int',
-		'resource_id' => 'int'
-	];
+    public $incrementing = false;
 
-	public function gallery(): BelongsTo
+    public $timestamps = false;
+
+    protected $casts = [
+        'gallery_id' => 'int',
+        'resource_id' => 'int',
+    ];
+
+    /**
+     * @return BelongsTo<Gallery, GalleryHasResource>
+     */
+    public function gallery(): BelongsTo
     {
-		return $this->belongsTo(Gallery::class);
-	}
+        return $this->belongsTo(Gallery::class);
+    }
 }

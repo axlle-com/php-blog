@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\User\Model;
 
 use Carbon\Carbon;
@@ -17,34 +18,35 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * @property Carbon|null $expired_at
- *
  * @property User|null $user
- *
- * @package App\Models
  */
 class UserToken extends Model
 {
-	use SoftDeletes;
-	protected $table = 'user_token';
+    use SoftDeletes;
 
-	protected $casts = [
-		'user_id' => 'int',
-		'expired_at' => 'datetime'
-	];
+    protected $table = 'user_token';
 
-	protected $hidden = [
-		'token'
-	];
+    protected $casts = [
+        'user_id' => 'int',
+        'expired_at' => 'datetime',
+    ];
 
-	protected $fillable = [
-		'user_id',
-		'type',
-		'token',
-		'expired_at'
-	];
+    protected $hidden = [
+        'token',
+    ];
 
-	public function user(): BelongsTo
+    protected $fillable = [
+        'user_id',
+        'type',
+        'token',
+        'expired_at',
+    ];
+
+    /**
+     * @return BelongsTo<User, UserToken>
+     */
+    public function user(): BelongsTo
     {
-		return $this->belongsTo(User::class);
-	}
+        return $this->belongsTo(User::class);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Main\Gallery\Model;
 
 use Carbon\Carbon;
@@ -19,32 +20,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- *
  * @property Gallery|null $gallery
- *
- * @package App\Models
  */
 class GalleryImage extends Model
 {
-	use SoftDeletes;
-	protected $table = 'gallery_image';
+    use SoftDeletes;
 
-	protected $casts = [
-		'gallery_id' => 'int',
-		'sort' => 'int'
-	];
+    protected $table = 'gallery_image';
 
-	protected $fillable = [
-		'gallery_id',
-		'original_name',
-		'image',
-		'title',
-		'description',
-		'sort'
-	];
+    protected $casts = [
+        'gallery_id' => 'int',
+        'sort' => 'int',
+    ];
 
-	public function gallery(): BelongsTo
+    protected $fillable = [
+        'gallery_id',
+        'original_name',
+        'image',
+        'title',
+        'description',
+        'sort',
+    ];
+
+    /**
+     * @return BelongsTo<Gallery, GalleryImage>
+     */
+    public function gallery(): BelongsTo
     {
-		return $this->belongsTo(Gallery::class);
-	}
+        return $this->belongsTo(Gallery::class);
+    }
 }
