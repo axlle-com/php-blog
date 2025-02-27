@@ -3,27 +3,32 @@
 namespace App\Providers;
 
 use App\Exceptions\ApiExceptionHandler;
+use Enqueue\RdKafka\RdKafkaConnectionFactory;
 use Illuminate\Support\ServiceProvider;
 use Main\Analytic\Service\RequestLogger;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     #[\Override]
     public function register(): void
     {
-        $this->app->bind(ApiExceptionHandler::class, fn(): \App\Exceptions\ApiExceptionHandler => new ApiExceptionHandler());
+        $this->app->bind(ApiExceptionHandler::class, fn(): ApiExceptionHandler => new ApiExceptionHandler());
 
-        $this->app->singleton(RequestLogger::class, fn(): \Main\Analytic\Service\RequestLogger => new RequestLogger());
+        $this->app->singleton(RequestLogger::class, fn(): RequestLogger => new RequestLogger());
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        $factory = new RdKafkaConnectionFactory(['global' => [
+            'metadata.broker.list' => config('kafka.dsn')
+        ]]);
+
+        $context = $factory->createContext();
+        $topic = $context->createTopic(config('kafka.topic'));
+
+        try {
+            $context->createTopic($topic->getTopicName());
+        } catch (\Exception $e) {
+        }
     }
 }

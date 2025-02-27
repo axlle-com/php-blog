@@ -7,6 +7,8 @@
     "require": {
         "php": "^8.3",
         "ext-pdo": "*",
+        "enqueue/enqueue": "^0.10.24",
+        "enqueue/rdkafka": "^0.10.20",
         "laravel/framework": "11.31.0.0",
         "laravel/horizon": "^5.27",
         "laravel/tinker": "^2.9",

@@ -35,6 +35,8 @@ services:
                 condition: service_healthy
         extra_hosts:
             - "host.docker.internal:host-gateway"
+#        command: >
+#            sh -c "php-fpm & while ! php artisan kafka:consume; do sleep 5; done"
 
     mysql:
         image: mysql:8.0-oracle
@@ -80,7 +82,44 @@ services:
         healthcheck:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
+    zookeeper:
+        image: bitnami/zookeeper:latest
+        ports:
+            - "2181:2181"
+        environment:
+            - ALLOW_ANONYMOUS_LOGIN=yes
+
+    kafka:
+        image: bitnami/kafka:latest
+        ports:
+            - "9092:9092"
+            - "29092:29092"
+        volumes:
+            - kafka_data:/var/lib/kafka
+        environment:
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+            - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+            - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_INTERNAL://:29092
+            - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://localhost:29092
+            - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+            - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+            - KAFKA_NUM_PARTITIONS=3
+            - KAFKA_DEFAULT_REPLICATION_FACTOR=1
+        depends_on:
+            - zookeeper
+
+    kafka-ui:
+        image: provectuslabs/kafka-ui:latest
+        ports:
+            - "8091:8080"
+        environment:
+            - KAFKA_CLUSTERS_0_NAME=local
+            - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+        depends_on:
+            - kafka
+
 volumes:
     mysql_data:
     redis_data:
     postgres_data:
+    kafka_data:

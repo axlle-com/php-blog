@@ -2,6 +2,9 @@ up:
 	docker-compose up -d
 	docker-compose exec php-fpm composer install
 	docker-compose exec php-fpm php artisan migrate --step
+restart:
+	docker-compose down
+	docker-compose up -d
 check:
 	docker-compose exec php-fpm vendor/bin/rector process
 	docker-compose exec php-fpm vendor/bin/phpstan analyse --memory-limit=2G --debug

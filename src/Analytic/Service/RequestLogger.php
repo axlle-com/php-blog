@@ -2,6 +2,7 @@
 
 namespace Main\Analytic\Service;
 
+use App\Queue\KafkaProducer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -62,7 +63,8 @@ class RequestLogger
     public function clear(): void
     {
         Log::info(json_encode($this->getLogData()));
-
+        $producer = new KafkaProducer();
+        $producer->send("Hello from Laravel Kafka!");
         foreach (array_keys($this->getLogData()) as $key) {
             $this->$key = null;
         }

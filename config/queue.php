@@ -72,6 +72,15 @@ return [
             'after_commit' => false,
         ],
 
+        'kafka' => [
+            'driver' => 'kafka',
+            'topic' => env('KAFKA_TOPIC', 'default_topic'),
+            'consumer_group_id' => env('KAFKA_CONSUMER_GROUP_ID', 'laravel_group'),
+            'brokers' => env('KAFKA_BROKERS', 'kafka:9092'),
+            'queue' => env('KAFKA_QUEUE', 'default'),
+            'sleep_on_error' => 1,
+            'ssl_verify' => false,
+        ],
     ],
 
     /*
