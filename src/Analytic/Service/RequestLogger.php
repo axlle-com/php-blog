@@ -64,7 +64,7 @@ class RequestLogger
     {
         Log::info(json_encode($this->getLogData()));
         $producer = new KafkaProducer();
-        $producer->send("Hello from Laravel Kafka!");
+        $producer->send(json_encode($this->getLogData()));
         foreach (array_keys($this->getLogData()) as $key) {
             $this->$key = null;
         }

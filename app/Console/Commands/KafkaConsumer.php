@@ -12,32 +12,30 @@ class KafkaConsumer extends Command
     protected $signature = 'kafka:consume';
     protected $description = 'Consume messages from Kafka';
 
-    public function handle(): void
+    public function handle(RdKafkaConnectionFactory $factory): void
     {
-        $factory = new RdKafkaConnectionFactory([
-            'global' => [
-                'metadata.broker.list' => config('kafka.dsn'),
-            ],
-        ]);
-
         /** @var Context $context */
         $context = $factory->createContext();
 
         try {
             $topic = $context->createTopic(config('kafka.topic'));
+            // Проверка доступности
+            $testConsumer = $context->createConsumer($topic);
+            $testConsumer->receive(100);
         } catch (\Exception $e) {
             $this->error('Ошибка создания топика: ' . $e->getMessage());
             return;
         }
 
-        // Используем createTopic вместо createQueue
         $consumer = $context->createConsumer($topic);
-        $this->info(config('kafka.topic'));
-        $this->info("Ожидание сообщений...");
+        $this->info('Ожидание сообщений...');
 
-        while (true) {
+        $retryCount = 0;
+        $maxRetries = 3;
+
+        while ($retryCount < $maxRetries) {
             try {
-                $message = $consumer->receive(5000); // Таймаут 5 секунд
+                $message = $consumer->receive(5_000); // Таймаут 5 секунд
 
                 if ($message instanceof Message) {
                     $this->processMessage($message);
@@ -45,26 +43,26 @@ class KafkaConsumer extends Command
                 }
 
                 // Пауза для снижения нагрузки на CPU
-                usleep(100000); // 100ms
+                usleep(100_000); // 100ms
 
-            } catch (\Exception $e) {
-                $this->error('Прервано: ' . $e->getMessage());
-                break;
             } catch (\Throwable $e) {
                 $this->error('Ошибка: ' . $e->getMessage());
-                sleep(1); // Пауза перед повторной попыткой
+                sleep(2); // Пауза перед повторной попыткой
+                $retryCount++;
             }
         }
+
+        $this->info('Воркер закончил работу');
     }
 
     protected function processMessage(Message $message): void
     {
         try {
-            $this->info("Получено: " . $message->getBody());
+            $this->info('Получено: ' . $message->getBody());
             // Здесь должна быть ваша бизнес-логика
 
         } catch (\Throwable $e) {
-            $this->error("Ошибка обработки: " . $e->getMessage());
+            $this->error('Ошибка обработки: ' . $e->getMessage());
         }
     }
 }

@@ -14,7 +14,8 @@
         "laravel/tinker": "^2.9",
         "revolt/event-loop": "^1.0",
         "spatie/laravel-data": "*",
-        "spatie/laravel-permission": "^6"
+        "spatie/laravel-permission": "^6",
+        "ext-pcntl": "*"
     },
     "require-dev": {
         "bennett-treptow/laravel-migration-generator": "^4.4",

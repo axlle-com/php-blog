@@ -18,9 +18,10 @@ class KafkaProducer
         $factory = new RdKafkaConnectionFactory([
             'global' => [
                 'metadata.broker.list' => config('kafka.dsn'),
-                'enable.auto.commit' => 'false',
                 'group.id' => config('kafka.group_id'),
                 'auto.offset.reset' => 'earliest',
+                'enable.auto.commit' => 'false',
+                'session.timeout.ms' => '30000',
             ],
             'topic' => [
                 'auto.offset.reset' => 'earliest',
@@ -41,7 +42,7 @@ class KafkaProducer
     public function send(string $messageText, string $key = null): void
     {
         $message = $this->context->createMessage($messageText);
-        if ($key) {
+        if ($key !== null) {
             $message->setKey($key);
         }
 

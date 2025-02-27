@@ -18,6 +18,10 @@ logs:
 	docker-compose logs -f
 stop:
 	docker-compose stop
+rebuild:
+	docker-compose down
+	docker-compose build
+	make up
 refresh:
 	docker-compose down
 	docker-compose build --no-cache
@@ -36,3 +40,6 @@ build:
 push:
 	docker-compose -f docker-compose.build.yml push
 build_and_push: build push
+
+kafka:
+	docker-compose exec php-fpm php artisan kafka:consume
