@@ -6,16 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
         "enqueue/enqueue": "^0.10.24",
         "enqueue/rdkafka": "^0.10.20",
+        "jobcloud/php-kafka-lib": "~1.0",
         "laravel/framework": "11.31.0.0",
         "laravel/horizon": "^5.27",
         "laravel/tinker": "^2.9",
         "revolt/event-loop": "^1.0",
         "spatie/laravel-data": "*",
-        "spatie/laravel-permission": "^6",
-        "ext-pcntl": "*"
+        "spatie/laravel-permission": "^6"
     },
     "require-dev": {
         "bennett-treptow/laravel-migration-generator": "^4.4",

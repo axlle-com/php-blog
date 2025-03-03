@@ -35,8 +35,6 @@ services:
                 condition: service_healthy
         extra_hosts:
             - "host.docker.internal:host-gateway"
-#        command: >
-#            sh -c "php-fpm & while ! php artisan kafka:consume; do sleep 5; done"
 
     mysql:
         image: mysql:8.0-oracle
@@ -105,6 +103,7 @@ services:
             - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
             - KAFKA_NUM_PARTITIONS=3
             - KAFKA_DEFAULT_REPLICATION_FACTOR=1
+            - KAFKA_CFG_BROKER_ID=-1
         depends_on:
             - zookeeper
 

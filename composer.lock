@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f1a1ff95d65b1f3f2ac129538654ea9",
+    "content-hash": "887f9983471d42cee484400f740767f9",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2216,6 +2216,73 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "jobcloud/php-kafka-lib",
+            "version": "v1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jobcloud/php-kafka-lib.git",
+                "reference": "2bb7f9c7b771786f37e6f38a168423f480894292"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jobcloud/php-kafka-lib/zipball/2bb7f9c7b771786f37e6f38a168423f480894292",
+                "reference": "2bb7f9c7b771786f37e6f38a168423f480894292",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-rdkafka": "^4.0|^5.0|^6.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "flix-tech/avro-serde-php": "^1.4",
+                "infection/infection": "^0.22",
+                "johnkary/phpunit-speedtrap": "^3.1",
+                "kwn/php-rdkafka-stubs": "^2.0.0",
+                "php-mock/php-mock-phpunit": "^2.6",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.4",
+                "rregeer/phpunit-coverage-check": "^0.3.1",
+                "squizlabs/php_codesniffer": "^3.5.4"
+            },
+            "suggest": {
+                "flix-tech/avro-serde-php": "Is needed for Avro support"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jobcloud\\Kafka\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jobcloud AG",
+                    "homepage": "https://careers.jobcloud.ch/en/our-team/?term=133"
+                }
+            ],
+            "description": "Jobcloud PHP Kafka library",
+            "keywords": [
+                "kafka",
+                "messaging",
+                "php",
+                "rdkafka"
+            ],
+            "support": {
+                "issues": "https://github.com/jobcloud/php-kafka-lib/issues",
+                "source": "https://github.com/jobcloud/php-kafka-lib/tree/v1.7.1"
+            },
+            "time": "2022-12-07T08:12:08+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -11516,6 +11583,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^8.3",
+        "ext-pcntl": "*",
         "ext-pdo": "*"
     },
     "platform-dev": {},

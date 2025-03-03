@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(append: [
             LogRequestsMiddleware::class,
         ]);
+        $middleware->web(append: [
+            LogRequestsMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e, $request) {

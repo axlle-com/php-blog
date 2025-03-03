@@ -2,7 +2,8 @@
 
 namespace Main\Analytic\Service;
 
-use App\Queue\KafkaProducer;
+use App\Queue\Kafka\Producer;
+use App\Queue\Queue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -29,6 +30,11 @@ class RequestLogger
 
     // Кастомные данные
     private ?array $data = [];
+
+    public function __construct(private ?Queue $queue)
+    {
+    }
+
 
     public function setRequestData(Request $request): void
     {
@@ -63,8 +69,9 @@ class RequestLogger
     public function clear(): void
     {
         Log::info(json_encode($this->getLogData()));
-        $producer = new KafkaProducer();
-        $producer->send(json_encode($this->getLogData()));
+
+        $this->queue->send(json_encode($this->getLogData()));
+
         foreach (array_keys($this->getLogData()) as $key) {
             $this->$key = null;
         }

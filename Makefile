@@ -41,5 +41,5 @@ push:
 	docker-compose -f docker-compose.build.yml push
 build_and_push: build push
 
-kafka:
-	docker-compose exec php-fpm php artisan kafka:consume
+broker:
+	docker-compose exec php-fpm php artisan broker:consume
