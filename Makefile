@@ -19,7 +19,7 @@ logs:
 stop:
 	docker-compose stop
 rebuild:
-	docker-compose down
+	docker-compose down -v
 	docker-compose build
 	make up
 refresh:
@@ -43,3 +43,6 @@ build_and_push: build push
 
 broker:
 	docker-compose exec php-fpm php artisan broker:consume
+
+migrate_analytic:
+	docker-compose exec php-fpm php artisan migrate:analytic

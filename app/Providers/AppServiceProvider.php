@@ -6,11 +6,13 @@ use App\Exceptions\ApiExceptionHandler;
 use App\Queue\Kafka\Consumer;
 use App\Queue\Kafka\Producer;
 use App\Queue\Queue;
+use ClickHouseDB\Client;
 use Illuminate\Support\ServiceProvider;
 use Jobcloud\Kafka\Consumer\KafkaConsumerBuilder;
 use Jobcloud\Kafka\Consumer\KafkaConsumerBuilderInterface;
 use Jobcloud\Kafka\Producer\KafkaProducerBuilder;
 use Jobcloud\Kafka\Producer\KafkaProducerInterface;
+use Main\Analytic\Repository\Migration;
 use Main\Analytic\Service\RequestLogger;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,6 +37,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Queue::class, Producer::class);
 
         $this->app->singleton(RequestLogger::class, RequestLogger::class);
+
+        $this->app->bind(Migration::class,
+            fn(): Migration => new Migration(
+                new Client(config('clickhouse'))
+            )
+        );
     }
 
     public function boot(): void

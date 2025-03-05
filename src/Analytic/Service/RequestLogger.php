@@ -2,7 +2,6 @@
 
 namespace Main\Analytic\Service;
 
-use App\Queue\Kafka\Producer;
 use App\Queue\Queue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

@@ -117,8 +117,21 @@ services:
         depends_on:
             - kafka
 
+    clickhouse:
+        image: clickhouse/clickhouse-server:latest
+        ports:
+            - "8123:8123"
+            - "9000:9000"
+        environment:
+            - CLICKHOUSE_USER=default
+            - CLICKHOUSE_PASSWORD=secret
+        volumes:
+            - clickhouse_data:/var/lib/clickhouse
+            - ./docker/clickhouse/custom_settings.xml:/etc/clickhouse-server/users.d/custom_settings.xml:ro
+
 volumes:
     mysql_data:
     redis_data:
     postgres_data:
     kafka_data:
+    clickhouse_data:
