@@ -4,85 +4,37 @@ namespace Main\Analytic\Service;
 
 use App\Queue\Queue;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Main\Analytic\Model\AnalyticData;
 
 class RequestLogger
 {
-    // Базовые данные запроса
-    private ?string $method = null;
-    private ?string $path = null;
-    private ?string $fullUrl = null;
-    private ?string $ip = null;
-    private ?string $userAgent = null;
-    private ?string $requestTime = null;
-    private ?float $duration = null;
+    private ?AnalyticData $analyticData = null;
 
-    // Дополнительные данные, которые можно извлечь из запроса
-    private ?string $host = null;
-    private ?string $scheme = null;
-    private ?string $contentType = null;
-    private ?int $contentLength = null;
-    private ?string $referer = null;
-    private ?array $queryParams = null;
-    private ?array $requestBody = null;
-    private ?array $headers = null;
-
-    // Кастомные данные
-    private ?array $data = [];
-
-    public function __construct(private ?Queue $queue)
+    public function __construct(private readonly ?Queue $queue)
     {
     }
-
 
     public function setRequestData(Request $request): void
     {
-        $this->method = $request->method();
-        $this->path = $request->path();
-        $this->fullUrl = $request->fullUrl();
-        $this->ip = $request->ip();
-        $this->userAgent = $request->userAgent();
-        $this->requestTime = now()->toDateTimeString();
-
-        // Дополнительные данные
-        $this->host = $request->getHost();
-        $this->scheme = $request->getScheme();
-        $this->contentType = $request->header('Content-Type');
-        $this->contentLength = $request->header('Content-Length');
-        $this->referer = $request->header('Referer');
-        $this->queryParams = $request->query();
-        $this->requestBody = $request->all();
-        $this->headers = $request->headers->all();
-    }
-
-    public function addData(string $key, $value): void
-    {
-        $this->data[$key] = $value;
+        $this->analyticData = AnalyticData::fromRequest($request);
     }
 
     public function getLogData(): array
     {
-        return $this->__serialize();
+        return $this->analyticData ? $this->analyticData->toArray() : [];
     }
 
-    public function clear(): void
+    public function reset(): void
     {
-        Log::info(json_encode($this->getLogData()));
-
-        $this->queue->send(json_encode($this->getLogData()));
-
-        foreach (array_keys($this->getLogData()) as $key) {
-            $this->$key = null;
+        if ($this->getLogData() !== []) {
+            $this->queue->send(json_encode($this->getLogData()));
         }
-    }
 
-    public function __serialize(): array
-    {
-        return get_object_vars($this);
+        $this->analyticData = null;
     }
 
     public function duration(float $duration): void
     {
-        $this->duration = $duration;
+        $this->analyticData->duration = $duration;
     }
 }

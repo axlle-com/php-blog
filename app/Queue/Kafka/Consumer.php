@@ -7,10 +7,15 @@ use Jobcloud\Kafka\Consumer\KafkaConsumerBuilderInterface;
 use Jobcloud\Kafka\Exception\KafkaConsumerConsumeException;
 use Jobcloud\Kafka\Exception\KafkaConsumerEndOfPartitionException;
 use Jobcloud\Kafka\Exception\KafkaConsumerTimeoutException;
+use Main\Analytic\Interface\Provider;
+use Main\Analytic\Model\AnalyticData;
 
 readonly class Consumer implements \App\Queue\Consumer
 {
-    public function __construct(private KafkaConsumerBuilderInterface $builder)
+    public function __construct(
+        private KafkaConsumerBuilderInterface $builder,
+        private Provider $provider,
+    )
     {
     }
 
@@ -31,7 +36,11 @@ readonly class Consumer implements \App\Queue\Consumer
             try {
                 $message = $consumer->consume();
                 echo print_r($message->getOffset(), true) . PHP_EOL;
-                // business logic
+
+                $this->provider->create(
+                    AnalyticData::fromArray(json_decode($message->getBody(), true))
+                );
+
                 $consumer->commit($message);
             } catch (KafkaConsumerTimeoutException $e) {
                 Log::error('KafkaConsumerTimeoutException');

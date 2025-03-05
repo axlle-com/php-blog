@@ -1,3 +1,4 @@
+start:restart up migrate_analytic broker
 up:
 	docker-compose up -d
 	docker-compose exec php-fpm composer install

@@ -16,8 +16,6 @@ class GetUser extends Controller
 
     public function __invoke(): JsonResponse|JsonResource
     {
-        $this->requestLogger->addData('GetUser', Response::HTTP_OK);
-
         return new JsonResponse([], Response::HTTP_OK);
     }
 }

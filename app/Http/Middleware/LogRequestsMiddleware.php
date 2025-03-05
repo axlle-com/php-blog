@@ -26,12 +26,7 @@ readonly class LogRequestsMiddleware
 
         // Добавляем время выполнения и статус ответа
         $this->requestLogger->duration($duration);
-        $this->requestLogger->addData('status', $response->getStatusCode());
-
-        // Отправляем данные в очередь
-//        Queue::push(new LogRequestToClickHouse($logData));
-
-        $this->requestLogger->clear();
+        $this->requestLogger->reset();
 
         return $response;
     }
